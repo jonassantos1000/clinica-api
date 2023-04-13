@@ -3,6 +3,8 @@ package com.app.med.project.api.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.app.med.project.api.domains.Medico;
@@ -22,7 +24,7 @@ public class MedicoService {
 		repository.save(medico);
 	}
 
-	public List<ListagemResumoMedico> listagemResumidaMedico() {
-		return repository.findAll().stream().map(ListagemResumoMedico::new).toList();
+	public Page<ListagemResumoMedico> listagemResumidaMedico(Pageable paginacao) {
+		return repository.findAll(paginacao).map(ListagemResumoMedico::new);
 	}
 }
