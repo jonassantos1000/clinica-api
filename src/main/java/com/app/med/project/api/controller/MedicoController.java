@@ -6,11 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.med.project.api.domains.Medico;
+import com.app.med.project.api.domains.dto.DadosAtualizacaoMedico;
 import com.app.med.project.api.domains.dto.DadosCadastroMedico;
 import com.app.med.project.api.domains.dto.ListagemResumoMedico;
 import com.app.med.project.api.service.MedicoService;
@@ -28,6 +30,11 @@ public class MedicoController {
 	public void cadastrar(@RequestBody @Valid DadosCadastroMedico medicoDTO) {
 		Medico medico = new Medico(medicoDTO);
 		service.salvar(medico);
+	}
+	
+	@PutMapping
+	public void atualizar(@RequestBody @Valid DadosAtualizacaoMedico medicoDTO) {
+		service.atualizar(medicoDTO);
 	}
 	
 	@GetMapping("/resumo")
