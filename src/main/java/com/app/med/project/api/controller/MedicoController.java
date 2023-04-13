@@ -1,6 +1,9 @@
 package com.app.med.project.api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.med.project.api.domains.Medico;
 import com.app.med.project.api.domains.dto.DadosCadastroMedico;
+import com.app.med.project.api.domains.dto.ListagemResumoMedico;
 import com.app.med.project.api.service.MedicoService;
 
 import jakarta.validation.Valid;
@@ -24,5 +28,10 @@ public class MedicoController {
 		Medico medico = new Medico(medicoDTO);
 		service.salvar(medico);
 	}
-
+	
+	@GetMapping("/resumo")
+	public List<ListagemResumoMedico> listar(){
+		return service.listagemResumidaMedico();
+	}
+	
 }

@@ -22,26 +22,58 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Medico {
-	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
 	private String email;
 	private String crm;
 	private String telefone;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Especialidade especialidade;
-	
+
 	@Embedded
 	private Endereco endereco;
-	
+
+	public Medico() {
+	}
+
 	public Medico(DadosCadastroMedico medicoDTO) {
 		this.nome = medicoDTO.nome();
 		this.crm = medicoDTO.crm();
 		this.email = medicoDTO.email();
 		this.telefone = medicoDTO.telefone();
 		this.especialidade = medicoDTO.especialidade();
-		this.endereco = new Endereco (medicoDTO.endereco());
+		this.endereco = new Endereco(medicoDTO.endereco());
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getCrm() {
+		return crm;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public Especialidade getEspecialidade() {
+		return especialidade;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
 	}
 }
