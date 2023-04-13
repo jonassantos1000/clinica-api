@@ -1,6 +1,6 @@
 package com.app.med.project.api.domains;
 
-import com.app.med.project.api.domains.dto.DadosCadastraisMedico;
+import com.app.med.project.api.domains.dto.DadosCadastroMedico;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -35,7 +35,7 @@ public class Medico {
 	@Embedded
 	private Endereco endereco;
 	
-	public Medico(DadosCadastraisMedico medicoDTO) {
+	public Medico(DadosCadastroMedico medicoDTO) {
 		this.nome = medicoDTO.nome();
 		this.crm = medicoDTO.crm();
 		this.email = medicoDTO.email();

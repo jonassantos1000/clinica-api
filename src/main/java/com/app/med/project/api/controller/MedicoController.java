@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.med.project.api.domains.Medico;
-import com.app.med.project.api.domains.dto.DadosCadastraisMedico;
+import com.app.med.project.api.domains.dto.DadosCadastroMedico;
 import com.app.med.project.api.service.MedicoService;
 
 @RestController
@@ -18,7 +18,7 @@ public class MedicoController {
 	MedicoService service;
 	
 	@PostMapping
-	public void cadastrar(@RequestBody DadosCadastraisMedico medicoDTO) {
+	public void cadastrar(@RequestBody DadosCadastroMedico medicoDTO) {
 		Medico medico = new Medico(medicoDTO);
 		service.salvar(medico);
 	}
