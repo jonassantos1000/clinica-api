@@ -30,6 +30,7 @@ public class Medico {
 	private String email;
 	private String crm;
 	private String telefone;
+	private Boolean ativo;
 
 	@Enumerated(EnumType.STRING)
 	private Especialidade especialidade;
@@ -45,6 +46,7 @@ public class Medico {
 		this.crm = medicoDTO.crm();
 		this.email = medicoDTO.email();
 		this.telefone = medicoDTO.telefone();
+		this.ativo = true;
 		this.especialidade = medicoDTO.especialidade();
 		this.endereco = new Endereco(medicoDTO.endereco());
 	}
@@ -75,6 +77,14 @@ public class Medico {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	public Long getId() {

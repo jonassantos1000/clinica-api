@@ -29,12 +29,18 @@ public class MedicoService {
 	}
 
 	public Page<ListagemResumoMedico> listagemResumidaMedico(Pageable paginacao) {
-		return repository.findAll(paginacao).map(ListagemResumoMedico::new);
+		return repository.findAllByAtivoTrue(paginacao).map(ListagemResumoMedico::new);
 	}
 	
-	public void atualizar(DadosAtualizacaoMedico dadosAtualizados) {
+	public void alterar(DadosAtualizacaoMedico dadosAtualizados) {
 		Medico medico = buscarMedicoPorId(dadosAtualizados.id());
 		atualizarDados(medico, dadosAtualizados);
+		repository.save(medico);
+	}
+	
+	public void inativar(Long id) {
+		Medico medico = buscarMedicoPorId(id);
+		medico.setAtivo(false);
 		repository.save(medico);
 	}
 	
