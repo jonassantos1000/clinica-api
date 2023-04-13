@@ -10,6 +10,8 @@ import com.app.med.project.api.domains.Medico;
 import com.app.med.project.api.domains.dto.DadosCadastroMedico;
 import com.app.med.project.api.service.MedicoService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/medicos")
 public class MedicoController {
@@ -18,7 +20,7 @@ public class MedicoController {
 	MedicoService service;
 	
 	@PostMapping
-	public void cadastrar(@RequestBody DadosCadastroMedico medicoDTO) {
+	public void cadastrar(@RequestBody @Valid DadosCadastroMedico medicoDTO) {
 		Medico medico = new Medico(medicoDTO);
 		service.salvar(medico);
 	}
