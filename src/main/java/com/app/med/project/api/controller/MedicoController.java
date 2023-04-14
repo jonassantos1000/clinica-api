@@ -21,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.app.med.project.api.domains.Medico;
 import com.app.med.project.api.domains.dto.DadosAtualizacaoMedico;
 import com.app.med.project.api.domains.dto.DadosCadastroMedico;
+import com.app.med.project.api.domains.dto.DadosDetalhamentoMedico;
 import com.app.med.project.api.domains.dto.DadosResumidoMedico;
 import com.app.med.project.api.service.MedicoService;
 
@@ -46,6 +47,11 @@ public class MedicoController {
 	public ResponseEntity<Void> atualizar(@RequestBody @Valid DadosAtualizacaoMedico medicoDTO) {
 		service.alterar(medicoDTO);
 		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<DadosDetalhamentoMedico> listar(@PathVariable Long id) {
+		return ResponseEntity.ok().body(new DadosDetalhamentoMedico(service.buscarMedicoPorId(id)));
 	}
 
 	@GetMapping("/resumo")
