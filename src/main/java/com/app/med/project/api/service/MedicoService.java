@@ -11,6 +11,7 @@ import com.app.med.project.api.domains.dto.DadosAtualizacaoMedico;
 import com.app.med.project.api.domains.dto.DadosResumidoMedico;
 import com.app.med.project.api.repository.MedicoRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -25,7 +26,7 @@ public class MedicoService {
 	}
 	
 	public Medico buscarMedicoPorId(Long id) {
-		return repository.findById(id).orElseThrow(() -> new RuntimeException("Medico não encontrado"));
+		return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Verifique os parametros de busca e tente novamente!"));
 	}
 
 	public Page<DadosResumidoMedico> listagemResumidaMedico(Pageable paginacao) {
