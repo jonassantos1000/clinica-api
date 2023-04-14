@@ -1,5 +1,7 @@
 package com.app.med.project.api.controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,11 +16,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.app.med.project.api.domains.Medico;
 import com.app.med.project.api.domains.dto.DadosAtualizacaoMedico;
 import com.app.med.project.api.domains.dto.DadosCadastroMedico;
-import com.app.med.project.api.domains.dto.ListagemResumoMedico;
+import com.app.med.project.api.domains.dto.DadosResumidoMedico;
 import com.app.med.project.api.service.MedicoService;
 
 import jakarta.validation.Valid;
@@ -31,10 +34,12 @@ public class MedicoController {
 	MedicoService service;
 
 	@PostMapping
-	public ResponseEntity<Void> cadastrar(@RequestBody @Valid DadosCadastroMedico medicoDTO) {
+	public ResponseEntity<DadosResumidoMedico> cadastrar(@RequestBody @Valid DadosCadastroMedico medicoDTO, UriComponentsBuilder uBuilder) {
 		Medico medico = new Medico(medicoDTO);
 		service.salvar(medico);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		
+		URI uri = uBuilder.path("/medicos/{id}").buildAndExpand(medico.getId()).toUri();
+		return ResponseEntity.created(uri).body(new DadosResumidoMedico(medico));
 	}
 
 	@PutMapping
@@ -44,7 +49,7 @@ public class MedicoController {
 	}
 
 	@GetMapping("/resumo")
-	public ResponseEntity<Page<ListagemResumoMedico>> listar(@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
+	public ResponseEntity<Page<DadosResumidoMedico>> listar(@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
 		return ResponseEntity.ok().body(service.listagemResumidaMedico(paginacao));
 	}
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.app.med.project.api.domains.Endereco;
 import com.app.med.project.api.domains.Medico;
 import com.app.med.project.api.domains.dto.DadosAtualizacaoMedico;
-import com.app.med.project.api.domains.dto.ListagemResumoMedico;
+import com.app.med.project.api.domains.dto.DadosResumidoMedico;
 import com.app.med.project.api.repository.MedicoRepository;
 
 import jakarta.transaction.Transactional;
@@ -28,8 +28,8 @@ public class MedicoService {
 		return repository.findById(id).orElseThrow(() -> new RuntimeException("Medico não encontrado"));
 	}
 
-	public Page<ListagemResumoMedico> listagemResumidaMedico(Pageable paginacao) {
-		return repository.findAllByAtivoTrue(paginacao).map(ListagemResumoMedico::new);
+	public Page<DadosResumidoMedico> listagemResumidaMedico(Pageable paginacao) {
+		return repository.findAllByAtivoTrue(paginacao).map(DadosResumidoMedico::new);
 	}
 	
 	public void alterar(DadosAtualizacaoMedico dadosAtualizados) {
