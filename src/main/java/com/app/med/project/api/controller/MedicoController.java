@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,24 +31,27 @@ public class MedicoController {
 	MedicoService service;
 
 	@PostMapping
-	public void cadastrar(@RequestBody @Valid DadosCadastroMedico medicoDTO) {
+	public ResponseEntity<Void> cadastrar(@RequestBody @Valid DadosCadastroMedico medicoDTO) {
 		Medico medico = new Medico(medicoDTO);
 		service.salvar(medico);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@PutMapping
-	public void atualizar(@RequestBody @Valid DadosAtualizacaoMedico medicoDTO) {
+	public ResponseEntity<Void> atualizar(@RequestBody @Valid DadosAtualizacaoMedico medicoDTO) {
 		service.alterar(medicoDTO);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	@GetMapping("/resumo")
-	public Page<ListagemResumoMedico> listar(@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
-		return service.listagemResumidaMedico(paginacao);
+	public ResponseEntity<Page<ListagemResumoMedico>> listar(@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
+		return ResponseEntity.ok().body(service.listagemResumidaMedico(paginacao));
 	}
 
 	@DeleteMapping("/{id}")
-	public void excluir(@PathVariable Long id) {
+	public ResponseEntity<Void> excluir(@PathVariable Long id) {
 		service.inativar(id);
+		return ResponseEntity.noContent().build();
 	}
 
 }
