@@ -1,4 +1,4 @@
-package com.app.med.project.api.infra;
+package com.app.med.project.api.infra.exception;
 
 import java.time.Instant;
 import java.util.List;
