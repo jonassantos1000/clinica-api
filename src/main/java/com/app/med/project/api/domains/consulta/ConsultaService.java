@@ -32,6 +32,16 @@ public class ConsultaService {
 		consultaRepository.save(consulta);
 	}
 
+	public void cancelar(@Valid DadosCancelamentoConsulta cancelamento) {
+		if (!consultaRepository.existsById(cancelamento.idConsulta())) {
+			throw new IllegalArgumentException("Consulta não encontrada!");
+		}
+		
+		Consulta consulta = consultaRepository.getReferenceById(cancelamento.idConsulta());
+		consulta.cancelar(cancelamento.motivo());
+		consultaRepository.save(consulta);
+	}
+	
 	private Medico escolherMedico(DadosAgendamentoConsulta consultaDTO) {
 		// A regra de negocio, consiste que o id do medico pode vir nulo no DTO, nessa
 		// situação o sistema deve atribuir aleariamente um medico na consulta.
@@ -45,16 +55,6 @@ public class ConsultaService {
 		}
 
 		return medicoService.escolherMedicoAleatorioPorEspecialiade(consultaDTO.especialidade(), consultaDTO.data());
-	}
-
-	public void cancelar(@Valid DadosCancelamentoConsulta cancelamento) {
-		if (!consultaRepository.existsById(cancelamento.idConsulta())) {
-			throw new IllegalArgumentException("Consulta não encontrada!");
-		}
-		
-		Consulta consulta = consultaRepository.getReferenceById(cancelamento.idConsulta());
-		consulta.cancelar(cancelamento.motivo());
-		consultaRepository.save(consulta);
 	}
 
 }
