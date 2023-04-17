@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import com.app.med.project.api.domains.Usuario;
@@ -29,7 +31,7 @@ public class TokenService {
 		        .withClaim("id", usuario.getId())
 		        .sign(algoritmo);
 		} catch (JWTCreationException exception){
-		    throw new RuntimeException("Erro ao gerar token jwt");
+		    throw new AuthenticationCredentialsNotFoundException("Erro ao gerar token jwt");
 		}
 	}
 	
@@ -42,7 +44,7 @@ public class TokenService {
 		        .verify(token)
 		        .getSubject();
 		} catch (JWTVerificationException exception){
-		    throw new RuntimeException("Token JWT não enviado ou esta expirado!");
+		    throw new BadCredentialsException("Token JWT não enviado ou esta expirado!");
 		}
 	}
 

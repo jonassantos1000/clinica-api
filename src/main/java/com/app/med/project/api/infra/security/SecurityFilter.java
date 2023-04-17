@@ -4,32 +4,44 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
+import com.app.med.project.api.repository.UsuarioRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
 public class SecurityFilter extends OncePerRequestFilter {
 
 	@Value("${api.security.token.secret}")
 	private String secret;
 	
 	@Autowired
-	TokenService service;
+	private TokenService service;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		
 		String tokenJWT = recuperarToken(request);
-		String subject = service.getSubject(tokenJWT);
+		
+		if (tokenJWT !=null) {
+			String subject = service.getSubject(tokenJWT);
+			UserDetails usuario = usuarioRepository.findByLogin(subject);
+			
+			var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+			
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+		}
 		
 		filterChain.doFilter(request, response);
 		
@@ -38,11 +50,11 @@ public class SecurityFilter extends OncePerRequestFilter {
 	private String recuperarToken(HttpServletRequest request) {
 		String authentication = request.getHeader("Authorization"); 
 		
-		if (authentication == null) {
-			throw new RuntimeException("Token JWT não foi enviado!");
+		if (authentication != null) {
+			return authentication.replace("Bearer ", "");
 		}
 		
-		return authentication.replace("Bearer ", "");
+		return null;
 	}
 
 }
