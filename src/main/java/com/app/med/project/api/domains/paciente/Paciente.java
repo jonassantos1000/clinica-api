@@ -30,13 +30,11 @@ public class Paciente {
 	public Paciente() {
 	}
 
-	public Paciente(Long id, String nome, Endereco endereco, String email, String telefone) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.endereco = endereco;
-		this.email = email;
-		this.telefone = telefone;
+	public Paciente(DadosCadastroPaciente pacienteDTO) {
+		setEmail(pacienteDTO.email());
+		setEndereco(new Endereco(pacienteDTO.endereco()));
+		setNome(pacienteDTO.nome());
+		setTelefone(pacienteDTO.telefone());
 	}
 
 	public Long getId() {
