@@ -49,14 +49,14 @@ public class MedicoController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 	
+	@GetMapping
+	public ResponseEntity<Page<DadosResumidoMedico>> listar(@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
+		return ResponseEntity.ok().body(service.consultarListagemResumidaMedico(paginacao));
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<DadosDetalhamentoMedico> listar(@PathVariable Long id) {
-		return ResponseEntity.ok().body(new DadosDetalhamentoMedico(service.buscarMedicoPorId(id)));
-	}
-
-	@GetMapping("/resumo")
-	public ResponseEntity<Page<DadosResumidoMedico>> listar(@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
-		return ResponseEntity.ok().body(service.listagemResumidaMedico(paginacao));
+		return ResponseEntity.ok().body(new DadosDetalhamentoMedico(service.consultarMedicoPorId(id)));
 	}
 
 	@DeleteMapping("/{id}")

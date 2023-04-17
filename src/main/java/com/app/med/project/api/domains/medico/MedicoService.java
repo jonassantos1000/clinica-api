@@ -21,28 +21,31 @@ public class MedicoService {
 		repository.save(medico);
 	}
 	
-	public Medico buscarMedicoPorId(Long id) {
+	public Medico consultarMedicoPorId(Long id) {
 		return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Verifique os parametros de busca e tente novamente!"));
 	}
 
-	public Page<DadosResumidoMedico> listagemResumidaMedico(Pageable paginacao) {
+	public Page<DadosResumidoMedico> consultarListagemResumidaMedico(Pageable paginacao) {
 		return repository.findAllByAtivoTrue(paginacao).map(DadosResumidoMedico::new);
 	}
 	
 	public void alterar(DadosAtualizacaoMedico dadosAtualizados) {
-		Medico medico = buscarMedicoPorId(dadosAtualizados.id());
+		Medico medico = consultarMedicoPorId(dadosAtualizados.id());
 		atualizarDados(medico, dadosAtualizados);
 		repository.save(medico);
 	}
 	
 	public void inativar(Long id) {
-		Medico medico = buscarMedicoPorId(id);
+		Medico medico = consultarMedicoPorId(id);
 		medico.setAtivo(false);
 		repository.save(medico);
 	}
 	
 	private void atualizarDados(Medico dadosAtuais, DadosAtualizacaoMedico dadosAtualizados) {
-		dadosAtuais.setEndereco(new Endereco(dadosAtualizados.endereco()));
-		dadosAtuais.setTelefone(dadosAtualizados.telefone());
+		if (!dadosAtualizados.endereco().equals(null))
+			dadosAtuais.setEndereco(new Endereco(dadosAtualizados.endereco()));
+		
+		if (!dadosAtualizados.telefone().isBlank())
+			dadosAtuais.setTelefone(dadosAtualizados.telefone());
 	}
 }
