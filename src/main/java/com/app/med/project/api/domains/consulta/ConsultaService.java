@@ -1,8 +1,11 @@
 package com.app.med.project.api.domains.consulta;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.med.project.api.domains.consulta.validacoes.ValidadorAgendamentoDeConsulta;
 import com.app.med.project.api.domains.medico.Medico;
 import com.app.med.project.api.domains.medico.MedicoService;
 import com.app.med.project.api.domains.paciente.Paciente;
@@ -15,16 +18,20 @@ import jakarta.validation.Valid;
 public class ConsultaService {
 
 	@Autowired
-	ConsultaRepository consultaRepository;
+	private ConsultaRepository consultaRepository;
 
 	@Autowired
-	MedicoService medicoService;
+	private MedicoService medicoService;
 
 	@Autowired
-	PacienteService pacienteService;
+	private PacienteService pacienteService;
+
+	private List<ValidadorAgendamentoDeConsulta> validadores;
 
 	@Transactional
 	public void agendar(DadosAgendamentoConsulta consultaDTO) {
+		validadores.forEach(validador -> validador.validar(consultaDTO));
+
 		Medico medico = escolherMedico(consultaDTO);
 		Paciente paciente = pacienteService.consultarPacientePorId(consultaDTO.idPaciente());
 
@@ -36,12 +43,12 @@ public class ConsultaService {
 		if (!consultaRepository.existsById(cancelamento.idConsulta())) {
 			throw new IllegalArgumentException("Consulta não encontrada!");
 		}
-		
+
 		Consulta consulta = consultaRepository.getReferenceById(cancelamento.idConsulta());
 		consulta.cancelar(cancelamento.motivo());
 		consultaRepository.save(consulta);
 	}
-	
+
 	private Medico escolherMedico(DadosAgendamentoConsulta consultaDTO) {
 		// A regra de negocio, consiste que o id do medico pode vir nulo no DTO, nessa
 		// situação o sistema deve atribuir aleariamente um medico na consulta.

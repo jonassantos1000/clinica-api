@@ -3,9 +3,12 @@ package com.app.med.project.api.domains.consulta.validacoes;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
+import org.springframework.stereotype.Component;
+
 import com.app.med.project.api.domains.consulta.DadosAgendamentoConsulta;
 
-public class ValidadorHorarioFuncionamentoClinica {
+@Component
+public class ValidadorHorarioFuncionamentoClinica implements ValidadorAgendamentoDeConsulta{
 	
 	//A clinica funciona de segunda à sabado, das 07:00 as 19:00
 	public void validar(DadosAgendamentoConsulta dados) {
