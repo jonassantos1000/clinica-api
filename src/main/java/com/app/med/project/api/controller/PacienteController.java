@@ -23,6 +23,8 @@ import com.app.med.project.api.domains.paciente.DadosDetalhamentoPaciente;
 import com.app.med.project.api.domains.paciente.Paciente;
 import com.app.med.project.api.domains.paciente.PacienteService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/pacientes")
 public class PacienteController {
@@ -31,7 +33,7 @@ public class PacienteController {
 	PacienteService service;
 
 	@PostMapping
-	public ResponseEntity<DadosDetalhamentoPaciente> cadastrar(@RequestBody DadosCadastroPaciente pacienteDTO,
+	public ResponseEntity<DadosDetalhamentoPaciente> cadastrar(@RequestBody @Valid DadosCadastroPaciente pacienteDTO,
 			UriComponentsBuilder uBuilder) {
 		Paciente paciente = new Paciente(pacienteDTO);
 		service.salvar(paciente);

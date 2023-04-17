@@ -2,6 +2,7 @@ package com.app.med.project.api.domains.medico;
 
 import com.app.med.project.api.domains.endereco.Endereco;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,9 +26,11 @@ public class Medico {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
 	private Long id;
 	private String nome;
 	private String email;
+	@Column(unique = true)
 	private String crm;
 	private String telefone;
 	private Boolean ativo;

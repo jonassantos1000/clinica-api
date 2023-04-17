@@ -1,10 +1,13 @@
 package com.app.med.project.api.infra.exception;
 
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,16 +37,22 @@ public class GerenciadorDeErros {
 		RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Crendenciais invalidas!", e.getMessage()), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(erro);
     }
+    
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<RespostaErro> tratarErroSQL(DataIntegrityViolationException e, HttpServletRequest request) {
+    	RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Não foi possivel finalizar a operação, pois ela infringe regras de integridade", e.getMostSpecificCause().getMessage()), request.getRequestURI());
+    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<RespostaErro> tratarErroAcessoNegado(AccessDeniedException e, HttpServletRequest request) {
 		RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Acesso negado", e.getMessage()), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(erro);
     }
-
+ 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<RespostaErro> tratarErro500(Exception e, HttpServletRequest request) {
-    	RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Acesso negado", e.getMessage()), request.getRequestURI());
+    	RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Ocorreu um erro durante o processamento da requisição", e.getMessage()), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
     }
 
