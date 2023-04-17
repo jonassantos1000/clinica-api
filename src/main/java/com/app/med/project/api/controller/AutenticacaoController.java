@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.med.project.api.domains.usuario.DadosAutenticacao;
 import com.app.med.project.api.domains.usuario.Usuario;
 import com.app.med.project.api.infra.security.DadosTokenJWT;
 import com.app.med.project.api.infra.security.TokenService;

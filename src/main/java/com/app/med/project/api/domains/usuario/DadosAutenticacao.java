@@ -1,4 +1,4 @@
-package com.app.med.project.api.controller;
+package com.app.med.project.api.domains.usuario;
 
 import jakarta.validation.constraints.NotBlank;
 
