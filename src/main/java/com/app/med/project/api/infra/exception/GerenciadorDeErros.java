@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,15 +29,9 @@ public class GerenciadorDeErros {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
 	}
 	
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<RespostaErro> tratarErroBadCredentials(BadCredentialsException e, HttpServletRequest request) {
+    @ExceptionHandler(CredencialInvalida.class)
+    public ResponseEntity<RespostaErro> tratarErroBadCredentials(CredencialInvalida e, HttpServletRequest request) {
 		RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Crendenciais invalidas!", e.getMessage()), request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(erro);
-    }
-
-    @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
-    public ResponseEntity<RespostaErro> tratarErroAuthentication(AuthenticationCredentialsNotFoundException e, HttpServletRequest request) {
-		RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Falha na autenticação", e.getMessage()), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(erro);
     }
 

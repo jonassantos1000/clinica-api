@@ -5,11 +5,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import com.app.med.project.api.domains.Usuario;
+import com.app.med.project.api.infra.exception.CredencialInvalida;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -31,7 +30,7 @@ public class TokenService {
 		        .withClaim("id", usuario.getId())
 		        .sign(algoritmo);
 		} catch (JWTCreationException exception){
-		    throw new AuthenticationCredentialsNotFoundException("Erro ao gerar token jwt");
+		    throw new CredencialInvalida("Erro ao gerar token jwt");
 		}
 	}
 	
@@ -44,7 +43,7 @@ public class TokenService {
 		        .verify(token)
 		        .getSubject();
 		} catch (JWTVerificationException exception){
-		    throw new BadCredentialsException("Token JWT não enviado ou esta expirado!");
+		    throw new CredencialInvalida("Token JWT não enviado ou esta expirado!");
 		}
 	}
 
