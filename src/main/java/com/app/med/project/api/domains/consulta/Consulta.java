@@ -39,4 +39,10 @@ public class Consulta {
 	@JoinColumn(name = "paciente_id")
 	private Paciente idPaciente;
 	private LocalDateTime data;
+	
+	private MotivoCancelamento motivo;
+	
+	public void cancelar(MotivoCancelamento motivo) {
+		this.motivo = motivo;
+	}
 }

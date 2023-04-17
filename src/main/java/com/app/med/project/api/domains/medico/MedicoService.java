@@ -1,5 +1,7 @@
 package com.app.med.project.api.domains.medico;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,5 +49,9 @@ public class MedicoService {
 		
 		if (!dadosAtualizados.telefone().isBlank())
 			dadosAtuais.setTelefone(dadosAtualizados.telefone());
+	}
+
+	public Medico escolherMedicoAleatorioPorEspecialiade(Especialidade especialidade, LocalDateTime data) {
+		return repository.consultarMedicoAleatorioPorEspecialidade(especialidade, data);
 	}
 }
