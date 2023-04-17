@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.app.med.project.api.domains.medico.Medico;
 import com.app.med.project.api.domains.paciente.Paciente;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -33,13 +34,14 @@ public class Consulta {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "medico_id")
-	private Medico idMedico;
+	private Medico medico;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "paciente_id")
-	private Paciente idPaciente;
+	private Paciente paciente;
 	private LocalDateTime data;
 	
+	@Column(name = "motivo_cancelamento")
 	private MotivoCancelamento motivo;
 	
 	public void cancelar(MotivoCancelamento motivo) {

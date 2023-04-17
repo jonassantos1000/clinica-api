@@ -54,10 +54,6 @@ public class GerenciadorDeErros {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(erro);
     }
  
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<RespostaErro> tratarErro500(Exception e, HttpServletRequest request) {
-    	RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Ocorreu um erro durante o processamento da requisição", e.getMessage()), request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
-    }
+
 
 }

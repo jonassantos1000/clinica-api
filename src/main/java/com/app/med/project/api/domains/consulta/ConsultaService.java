@@ -26,10 +26,11 @@ public class ConsultaService {
 	@Autowired
 	private PacienteService pacienteService;
 
+	@Autowired
 	private List<ValidadorAgendamentoDeConsulta> validadores;
 
 	@Transactional
-	public void agendar(DadosAgendamentoConsulta consultaDTO) {
+	public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta consultaDTO) {
 		validadores.forEach(validador -> validador.validar(consultaDTO));
 
 		Medico medico = escolherMedico(consultaDTO);
@@ -37,6 +38,7 @@ public class ConsultaService {
 
 		Consulta consulta = new Consulta(null, medico, paciente, consultaDTO.data(), null);
 		consultaRepository.save(consulta);
+		return new DadosDetalhamentoConsulta(consulta);
 	}
 
 	public void cancelar(@Valid DadosCancelamentoConsulta cancelamento) {

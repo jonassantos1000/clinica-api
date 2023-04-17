@@ -15,7 +15,7 @@ public class ValidadorHorarioAntecedencia implements ValidadorAgendamentoDeConsu
 		LocalDateTime dataConsulta = dados.data();
 		LocalDateTime dataAtual = LocalDateTime.now();
 		
-		Long diferencaHorarioEmMinutos = Duration.between(dataConsulta, dataAtual).toMinutes(); 
+		Long diferencaHorarioEmMinutos = Duration.between(dataAtual, dataConsulta).toMinutes(); 
 		
 		if(diferencaHorarioEmMinutos < 30) {
 			throw new IllegalArgumentException("A consulta deve ser agendada com antecedencia minima de 30 minutos");

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.med.project.api.domains.consulta.ConsultaService;
 import com.app.med.project.api.domains.consulta.DadosAgendamentoConsulta;
 import com.app.med.project.api.domains.consulta.DadosCancelamentoConsulta;
+import com.app.med.project.api.domains.consulta.DadosDetalhamentoConsulta;
 
 import jakarta.validation.Valid;
 
@@ -24,9 +25,8 @@ public class ConsultaController {
 	ConsultaService service;
 	
 	@PostMapping
-	public ResponseEntity<DadosAgendamentoConsulta> agendar(DadosAgendamentoConsulta agendamentoDTO){
-		service.agendar(agendamentoDTO);
-		return null;
+	public ResponseEntity<DadosDetalhamentoConsulta> agendar(@RequestBody DadosAgendamentoConsulta agendamentoDTO){
+		return ResponseEntity.ok(service.agendar(agendamentoDTO));
 	}
 	
 	@DeleteMapping
