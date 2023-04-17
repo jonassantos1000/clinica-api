@@ -1,13 +1,11 @@
 package com.app.med.project.api.infra.exception;
 
-import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,6 +34,12 @@ public class GerenciadorDeErros {
     public ResponseEntity<RespostaErro> tratarErroBadCredentials(CredencialInvalida e, HttpServletRequest request) {
 		RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Crendenciais invalidas!", e.getMessage()), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(erro);
+    }
+    
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<RespostaErro> tratarErroIllegalArgumentException(IllegalArgumentException e, HttpServletRequest request) {
+		RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Argumento Invalido", e.getMessage()), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
     
     @ExceptionHandler(DataIntegrityViolationException.class)

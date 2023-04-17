@@ -12,10 +12,12 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "Paciente")
 @Table(name = "pacientes")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -29,55 +31,12 @@ public class Paciente {
 	private Endereco endereco;
 	private String email;
 	private String telefone;
-	
-	public Paciente() {
-	}
 
 	public Paciente(DadosCadastroPaciente pacienteDTO) {
-		setEmail(pacienteDTO.email());
-		setEndereco(new Endereco(pacienteDTO.endereco()));
-		setNome(pacienteDTO.nome());
-		setTelefone(pacienteDTO.telefone());
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+		this.email = pacienteDTO.email();
+		this.endereco = new Endereco(pacienteDTO.endereco());
+		this.nome = pacienteDTO.nome();
+		this.telefone = pacienteDTO.telefone();
 	}
 
 }

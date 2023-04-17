@@ -15,10 +15,12 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "Medico")
 @Table(name = "medicos")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -41,9 +43,6 @@ public class Medico {
 	@Embedded
 	private Endereco endereco;
 
-	public Medico() {
-	}
-
 	public Medico(DadosCadastroMedico medicoDTO) {
 		this.nome = medicoDTO.nome();
 		this.crm = medicoDTO.crm();
@@ -53,68 +52,8 @@ public class Medico {
 		this.especialidade = medicoDTO.especialidade();
 		this.endereco = new Endereco(medicoDTO.endereco());
 	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setCrm(String crm) {
-		this.crm = crm;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
-	public void setEspecialidade(Especialidade especialidade) {
-		this.especialidade = especialidade;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
-
-	public Boolean getAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getCrm() {
-		return crm;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public Especialidade getEspecialidade() {
-		return especialidade;
-	}
-
-	public Endereco getEndereco() {
-		return endereco;
+	
+	public void excluir(boolean status) {
+		this.ativo = status;
 	}
 }

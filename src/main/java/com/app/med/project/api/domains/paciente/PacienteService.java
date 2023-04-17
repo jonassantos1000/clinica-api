@@ -23,7 +23,7 @@ public class PacienteService {
 
 	public Paciente consultarPacientePorId(Long id) {
 		return repository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Verifique os parametros de busca e tente novamente!"));
+				.orElseThrow(() -> new EntityNotFoundException("Id do paciente informado não existe. Verifique os parametros de busca e tente novamente!"));
 	}
 
 	public Page<DadosDetalhamentoPaciente> consultarListagemPaciente(Pageable paginacao) {

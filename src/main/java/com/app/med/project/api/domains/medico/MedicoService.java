@@ -22,7 +22,7 @@ public class MedicoService {
 	}
 	
 	public Medico consultarMedicoPorId(Long id) {
-		return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Verifique os parametros de busca e tente novamente!"));
+		return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id do medico informado não existe. Verifique os parametros de busca e tente novamente!"));
 	}
 
 	public Page<DadosResumidoMedico> consultarListagemResumidaMedico(Pageable paginacao) {
@@ -37,7 +37,7 @@ public class MedicoService {
 	
 	public void inativar(Long id) {
 		Medico medico = consultarMedicoPorId(id);
-		medico.setAtivo(false);
+		medico.excluir(false);
 		repository.save(medico);
 	}
 	
