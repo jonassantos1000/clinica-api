@@ -1,4 +1,4 @@
-package com.app.med.project.api.domains;
+package com.app.med.project.api.domains.usuario;
 
 import java.util.Collection;
 import java.util.List;

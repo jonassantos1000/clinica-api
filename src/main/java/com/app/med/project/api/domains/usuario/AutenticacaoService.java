@@ -1,12 +1,10 @@
-package com.app.med.project.api.service;
+package com.app.med.project.api.domains.usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import com.app.med.project.api.repository.UsuarioRepository;
 
 @Service
 public class AutenticacaoService implements UserDetailsService {

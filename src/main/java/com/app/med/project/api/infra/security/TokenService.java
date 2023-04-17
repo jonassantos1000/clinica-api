@@ -7,7 +7,7 @@ import java.time.ZoneOffset;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.app.med.project.api.domains.Usuario;
+import com.app.med.project.api.domains.usuario.Usuario;
 import com.app.med.project.api.infra.exception.CredencialInvalida;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

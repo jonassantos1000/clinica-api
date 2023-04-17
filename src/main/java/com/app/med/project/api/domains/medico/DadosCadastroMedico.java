@@ -1,6 +1,6 @@
-package com.app.med.project.api.domains.dto;
+package com.app.med.project.api.domains.medico;
 
-import com.app.med.project.api.domains.Especialidade;
+import com.app.med.project.api.domains.endereco.DadosEndereco;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;

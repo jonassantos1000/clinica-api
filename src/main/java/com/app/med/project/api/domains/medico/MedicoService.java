@@ -1,15 +1,11 @@
-package com.app.med.project.api.service;
+package com.app.med.project.api.domains.medico;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.app.med.project.api.domains.Endereco;
-import com.app.med.project.api.domains.Medico;
-import com.app.med.project.api.domains.dto.DadosAtualizacaoMedico;
-import com.app.med.project.api.domains.dto.DadosResumidoMedico;
-import com.app.med.project.api.repository.MedicoRepository;
+import com.app.med.project.api.domains.endereco.Endereco;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;

@@ -1,6 +1,6 @@
-package com.app.med.project.api.domains;
+package com.app.med.project.api.domains.medico;
 
-import com.app.med.project.api.domains.dto.DadosCadastroMedico;
+import com.app.med.project.api.domains.endereco.Endereco;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

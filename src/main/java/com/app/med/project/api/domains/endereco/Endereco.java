@@ -1,6 +1,4 @@
-package com.app.med.project.api.domains;
-
-import com.app.med.project.api.domains.dto.DadosEndereco;
+package com.app.med.project.api.domains.endereco;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

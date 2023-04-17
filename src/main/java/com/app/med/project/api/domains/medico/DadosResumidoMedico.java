@@ -1,7 +1,4 @@
-package com.app.med.project.api.domains.dto;
-
-import com.app.med.project.api.domains.Especialidade;
-import com.app.med.project.api.domains.Medico;
+package com.app.med.project.api.domains.medico;
 
 public record DadosResumidoMedico(Long id, String nome, String email, String crm, Especialidade especialidade) {
 
