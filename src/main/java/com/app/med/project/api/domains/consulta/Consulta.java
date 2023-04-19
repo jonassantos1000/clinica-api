@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "idConsulta")
+@EqualsAndHashCode(of = "id")
 public class Consulta {
 
 	@Id
