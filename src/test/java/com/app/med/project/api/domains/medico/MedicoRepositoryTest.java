@@ -47,6 +47,20 @@ public class MedicoRepositoryTest {
 		assertThat(medicoLivre).isNull();
 	}
 	
+	@Test
+	@DisplayName("Deveria devolver medico disponivel para consulta")
+	void consultarMedicoAleatorioPorEspecialidadeCenario2() {
+		var proximaQuintaFeiraAs12 = LocalDate.now()
+				.with(TemporalAdjusters.next(DayOfWeek.THURSDAY))
+				.atTime(10, 0);
+		
+		var medico = cadastrarMedico("medico", "joao@gmail.com", "123456", Especialidade.CARDIOLOGIA);
+	
+		var medicoLivre = medicoRepository.consultarMedicoAleatorioPorEspecialidade(Especialidade.CARDIOLOGIA, proximaQuintaFeiraAs12);
+		
+		assertThat(medicoLivre).isEqualTo(medico);
+	}
+	
 	private void cadastrarConsulta(Medico medico, Paciente paciente, LocalDateTime data) {
 		em.persist(new Consulta(null, medico, paciente, data, null));
 	}
