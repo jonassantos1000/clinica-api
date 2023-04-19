@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,13 +39,19 @@ public class GerenciadorDeErros {
     
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<RespostaErro> tratarErroIllegalArgumentException(IllegalArgumentException e, HttpServletRequest request) {
-		RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Argumento Invalido", e.getMessage()), request.getRequestURI());
+		RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Solicitação Invalida", e.getMessage()), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
     
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<RespostaErro> tratarErroSQL(DataIntegrityViolationException e, HttpServletRequest request) {
-    	RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Não foi possivel finalizar a operação, pois ela infringe regras de integridade", e.getMostSpecificCause().getMessage()), request.getRequestURI());
+    	RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Sua requisição não foi processada, pois ela infringe regras de integridade", e.getMostSpecificCause().getMessage()), request.getRequestURI());
+    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+    
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<RespostaErro> tratarErro400(HttpMessageNotReadableException e, HttpServletRequest request) {
+    	RespostaErro erro = new RespostaErro(Instant.now(), new ErroDetalhe("Sua requisição não foi processada, pois o corpo da requisição contém valores invalidos", e.getMessage()), request.getRequestURI());
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 

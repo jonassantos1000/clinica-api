@@ -1,4 +1,4 @@
-package com.app.med.project.api.domains.consulta.validacoes;
+package com.app.med.project.api.domains.consulta.validacoes.agendamento;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;

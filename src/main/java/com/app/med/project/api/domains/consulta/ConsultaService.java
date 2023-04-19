@@ -3,14 +3,17 @@ package com.app.med.project.api.domains.consulta;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.app.med.project.api.domains.consulta.validacoes.ValidadorAgendamentoDeConsulta;
+import com.app.med.project.api.domains.consulta.validacoes.agendamento.ValidadorAgendamentoDeConsulta;
+import com.app.med.project.api.domains.consulta.validacoes.cancelamento.ValidadorCancelamentoDeConsulta;
 import com.app.med.project.api.domains.medico.Medico;
 import com.app.med.project.api.domains.medico.MedicoService;
 import com.app.med.project.api.domains.paciente.Paciente;
 import com.app.med.project.api.domains.paciente.PacienteService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -27,11 +30,14 @@ public class ConsultaService {
 	private PacienteService pacienteService;
 
 	@Autowired
-	private List<ValidadorAgendamentoDeConsulta> validadores;
+	private List<ValidadorAgendamentoDeConsulta> validadoresAgendamento;
+
+	@Autowired
+	private List<ValidadorCancelamentoDeConsulta> validadoresCancelamento;
 
 	@Transactional
 	public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta consultaDTO) {
-		validadores.forEach(validador -> validador.validar(consultaDTO));
+		validadoresAgendamento.forEach(validador -> validador.validar(consultaDTO));
 
 		Medico medico = escolherMedico(consultaDTO);
 		Paciente paciente = pacienteService.consultarPacientePorId(consultaDTO.idPaciente());
@@ -42,13 +48,21 @@ public class ConsultaService {
 	}
 
 	public void cancelar(@Valid DadosCancelamentoConsulta cancelamento) {
-		if (!consultaRepository.existsById(cancelamento.idConsulta())) {
-			throw new IllegalArgumentException("Consulta não encontrada!");
-		}
+		consultarAgendamentoPorId(cancelamento.id());
+		validadoresCancelamento.forEach(validador -> validador.validar(cancelamento));
 
-		Consulta consulta = consultaRepository.getReferenceById(cancelamento.idConsulta());
+		Consulta consulta = consultaRepository.getReferenceById(cancelamento.id());
 		consulta.cancelar(cancelamento.motivo());
 		consultaRepository.save(consulta);
+	}
+
+	public Consulta consultarAgendamentoPorId(Long id) {
+		return consultaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(
+				"Id da consulta informado não existe. Verifique os parametros de busca e tente novamente!"));
+	}
+	
+	public List<DadosDetalhamentoConsulta> consultarListagemAgendamento(Pageable paginacao) {
+		return consultaRepository.findAllByMotivoIsNull(paginacao).stream().map(DadosDetalhamentoConsulta::new).toList();
 	}
 
 	private Medico escolherMedico(DadosAgendamentoConsulta consultaDTO) {
