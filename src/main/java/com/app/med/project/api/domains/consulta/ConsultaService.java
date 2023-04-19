@@ -62,7 +62,7 @@ public class ConsultaService {
 	}
 	
 	public List<DadosDetalhamentoConsulta> consultarListagemAgendamento(Pageable paginacao) {
-		return consultaRepository.findAllByMotivoIsNull(paginacao).stream().map(DadosDetalhamentoConsulta::new).toList();
+		return consultaRepository.findAllByMotivoCancelamentoIsNull(paginacao).stream().map(DadosDetalhamentoConsulta::new).toList();
 	}
 
 	private Medico escolherMedico(DadosAgendamentoConsulta consultaDTO) {
