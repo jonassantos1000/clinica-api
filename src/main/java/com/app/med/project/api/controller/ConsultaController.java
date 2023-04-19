@@ -18,10 +18,12 @@ import com.app.med.project.api.domains.consulta.DadosAgendamentoConsulta;
 import com.app.med.project.api.domains.consulta.DadosCancelamentoConsulta;
 import com.app.med.project.api.domains.consulta.DadosDetalhamentoConsulta;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/agendamentos")
+@SecurityRequirement(name = "bearer-key")
 public class ConsultaController {
 
 	@Autowired

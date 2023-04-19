@@ -25,20 +25,23 @@ import com.app.med.project.api.domains.medico.DadosResumidoMedico;
 import com.app.med.project.api.domains.medico.Medico;
 import com.app.med.project.api.domains.medico.MedicoService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/medicos")
+@SecurityRequirement(name = "bearer-key")
 public class MedicoController {
 
 	@Autowired
 	MedicoService service;
 
 	@PostMapping
-	public ResponseEntity<DadosResumidoMedico> cadastrar(@RequestBody @Valid DadosCadastroMedico medicoDTO, UriComponentsBuilder uBuilder) {
+	public ResponseEntity<DadosResumidoMedico> cadastrar(@RequestBody @Valid DadosCadastroMedico medicoDTO,
+			UriComponentsBuilder uBuilder) {
 		Medico medico = new Medico(medicoDTO);
 		service.salvar(medico);
-		
+
 		URI uri = uBuilder.path("/medicos/{id}").buildAndExpand(medico.getId()).toUri();
 		return ResponseEntity.created(uri).body(new DadosResumidoMedico(medico));
 	}
@@ -48,12 +51,13 @@ public class MedicoController {
 		service.alterar(medicoDTO);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
-	
+
 	@GetMapping
-	public ResponseEntity<Page<DadosResumidoMedico>> listar(@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
+	public ResponseEntity<Page<DadosResumidoMedico>> listar(
+			@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
 		return ResponseEntity.ok().body(service.consultarListagemResumidaMedico(paginacao));
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<DadosDetalhamentoMedico> listar(@PathVariable Long id) {
 		return ResponseEntity.ok().body(new DadosDetalhamentoMedico(service.consultarMedicoPorId(id)));
