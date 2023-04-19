@@ -18,7 +18,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.app.med.project.api.domains.consulta.Consulta;
 import com.app.med.project.api.domains.endereco.Endereco;
-import com.app.med.project.api.domains.paciente.DadosCadastroPaciente;
 import com.app.med.project.api.domains.paciente.Paciente;
 
 @DataJpaTest
