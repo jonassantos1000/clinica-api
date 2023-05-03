@@ -23,14 +23,14 @@ import com.app.med.project.api.domains.paciente.Paciente;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @ActiveProfiles("test")
-public class MedicoRepositoryTest {
+public class MedicoRepositoryTest{
 	
 	@Autowired
-	MedicoRepository medicoRepository;
+	protected TestEntityManager em;
 	
 	@Autowired
-	TestEntityManager em;
-
+	protected MedicoRepository medicoRepository;
+	
 	@Test
 	@DisplayName("Deveria devolver null quando unico medico cadastrado nao esta disponivel na data")
 	void consultarMedicoAleatorioPorEspecialidadeCenario1() {
