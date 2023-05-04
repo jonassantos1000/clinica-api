@@ -154,7 +154,7 @@ class ConsultaControllerTest extends ControllerAbstrato {
 
 	private Medico inserirMedicoPadrao() {
 		var valorAleatorio = geradorDeCodigoAleatorio();
-		var crm = valorAleatorio;
+		var crm = "1"+valorAleatorio;
 		var incrementoEmail = valorAleatorio;
 		var medico = new Medico(null, "medico teste", "medicoteste" + incrementoEmail + "@testando.com", crm,
 				"1154515232", true, Especialidade.CARDIOLOGIA, dadosEndereco());
@@ -167,7 +167,7 @@ class ConsultaControllerTest extends ControllerAbstrato {
 
 	private String geradorDeCodigoAleatorio() {
 		Random geradorNumeros = new Random();
-		return String.format("%06d", geradorNumeros.nextInt(1000));
+		return String.format("%05d", geradorNumeros.nextInt(1000));
 	}
 
 	private Endereco dadosEndereco() {
