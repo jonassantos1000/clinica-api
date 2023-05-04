@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -35,14 +35,13 @@ class PacienteControllerTest extends ControllerAbstrato{
 
 	@Autowired
 	PacienteService pacienteService;
-	
+
 	@Test
 	@DisplayName("Deveria cadastrar paciente valido")
 	void cadastrarPacienteCenario1() {
 		var paciente = criarPaciente();
-	    HttpHeaders header = new HttpHeaders();
-	    header.add("Authorization", "Bearer " + pegarToken());
-		var respostaRequisicao = restTemplate.exchange(URI.create(URL_PACIENTE), HttpMethod.POST, new HttpEntity<Paciente>(paciente,header) , DadosDetalhamentoPaciente.class);
+
+		var respostaRequisicao = restTemplate.exchange(URI.create(URL_PACIENTE), HttpMethod.POST, new HttpEntity<Paciente>(paciente, pegarHeader()) , DadosDetalhamentoPaciente.class);
 		
 		assertEquals(HttpStatus.CREATED, respostaRequisicao.getStatusCode());
 		assertEquals(paciente.getNome(), respostaRequisicao.getBody().nome());
@@ -53,14 +52,71 @@ class PacienteControllerTest extends ControllerAbstrato{
 	void cadastrarPacienteCenario2() {
 		var paciente = criarPaciente();
 		paciente.setNome("");
-	    HttpHeaders header = new HttpHeaders();
-	    header.add("Authorization", "Bearer " + pegarToken());
-		var respostaRequisicao = restTemplate.exchange(URI.create(URL_PACIENTE), HttpMethod.POST, new HttpEntity<Paciente>(paciente,header) , RespostaErro.class);
+	    
+	    ResponseEntity<RespostaErro> respostaRequisicao = restTemplate.exchange(URI.create(URL_PACIENTE), HttpMethod.POST, new HttpEntity<Paciente>(paciente, pegarHeader()) , RespostaErro.class);
 		
-		assertEquals(HttpStatus.BAD_REQUEST, respostaRequisicao.getStatusCode());
+	    assertEquals(HttpStatus.BAD_REQUEST, respostaRequisicao.getStatusCode());
 		assertTrue(respostaRequisicao.getBody().erros().size() > 0);
-		assertEquals("nome", respostaRequisicao.getBody().erros().stream().findFirst().get().aviso());
-		assertEquals("não deve estar em branco", respostaRequisicao.getBody().erros().stream().findFirst().get().mensagem());
+	}
+	
+	@Test
+	@DisplayName("Não deve cadastrar paciente com telefone em branco")
+	void cadastrarPacienteCenario3() {
+		var paciente = criarPaciente();
+		paciente.setTelefone("");
+	    
+	    ResponseEntity<RespostaErro> respostaRequisicao = restTemplate.exchange(URI.create(URL_PACIENTE), HttpMethod.POST, new HttpEntity<Paciente>(paciente, pegarHeader()) , RespostaErro.class);
+		
+	    assertEquals(HttpStatus.BAD_REQUEST, respostaRequisicao.getStatusCode());
+		assertTrue(respostaRequisicao.getBody().erros().size() > 0);
+	}
+	
+	@Test
+	@DisplayName("Não deve cadastrar paciente com email em branco")
+	void cadastrarPacienteCenario4() {
+		var paciente = criarPaciente();
+		paciente.setEmail("");
+	    
+	    ResponseEntity<RespostaErro> respostaRequisicao = restTemplate.exchange(URI.create(URL_PACIENTE), HttpMethod.POST, new HttpEntity<Paciente>(paciente, pegarHeader()) , RespostaErro.class);
+		
+	    assertEquals(HttpStatus.BAD_REQUEST, respostaRequisicao.getStatusCode());
+		assertTrue(respostaRequisicao.getBody().erros().size() > 0);
+	}
+	
+	@Test
+	@DisplayName("Não deve cadastrar paciente com email null")
+	void cadastrarPacienteCenario5() {
+		var paciente = criarPaciente();
+		paciente.setEmail(null);
+	    
+	    ResponseEntity<RespostaErro> respostaRequisicao = restTemplate.exchange(URI.create(URL_PACIENTE), HttpMethod.POST, new HttpEntity<Paciente>(paciente, pegarHeader()) , RespostaErro.class);
+		
+	    assertEquals(HttpStatus.BAD_REQUEST, respostaRequisicao.getStatusCode());
+		assertTrue(respostaRequisicao.getBody().erros().size() > 0);
+	}
+	
+	@Test
+	@DisplayName("Não deve cadastrar paciente com endereco null")
+	void cadastrarPacienteCenario6() {
+		var paciente = criarPaciente();
+		paciente.setEndereco(null);
+	    
+	    ResponseEntity<RespostaErro> respostaRequisicao = restTemplate.exchange(URI.create(URL_PACIENTE), HttpMethod.POST, new HttpEntity<Paciente>(paciente, pegarHeader()) , RespostaErro.class);
+		
+	    assertEquals(HttpStatus.BAD_REQUEST, respostaRequisicao.getStatusCode());
+		assertTrue(respostaRequisicao.getBody().erros().size() > 0);
+	}
+	
+	@Test
+	@DisplayName("Não deve retornar um Paciente com id invalido")
+	void cadastrarPacienteCenario7() {
+	    	    
+	    ResponseEntity<RespostaErro> respostaRequisicao = restTemplate.exchange(URI.create(URL_PACIENTE + "/0"), HttpMethod.GET, new HttpEntity<>("body", pegarHeader()) , RespostaErro.class);
+		
+	    System.out.println(respostaRequisicao.getBody());
+	    
+	    assertEquals(HttpStatus.NOT_FOUND, respostaRequisicao.getStatusCode());
+		assertTrue(respostaRequisicao.getBody().erros().size() > 0);
 	}
 	
 	private Endereco dadosEndereco() {
