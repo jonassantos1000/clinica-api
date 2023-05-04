@@ -42,7 +42,7 @@ public class PacienteService {
 	}
 
 	private void atualizarDados(Paciente dadosAtuais, DadosAtualizacaoPaciente dadosAtualizados) {
-		if (!dadosAtualizados.email().equals(null))
+		if (!(dadosAtualizados.endereco() == null))
 			dadosAtuais.setEndereco(new Endereco(dadosAtualizados.endereco()));
 		
 		if (!dadosAtualizados.telefone().isBlank())
