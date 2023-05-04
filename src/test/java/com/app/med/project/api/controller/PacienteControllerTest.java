@@ -1,5 +1,6 @@
 package com.app.med.project.api.controller;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URI;
@@ -22,6 +23,7 @@ import com.app.med.project.api.domains.endereco.Endereco;
 import com.app.med.project.api.domains.paciente.DadosDetalhamentoPaciente;
 import com.app.med.project.api.domains.paciente.Paciente;
 import com.app.med.project.api.domains.paciente.PacienteService;
+import com.app.med.project.api.infra.exception.RespostaErro;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
@@ -44,6 +46,21 @@ class PacienteControllerTest extends ControllerAbstrato{
 		
 		assertEquals(HttpStatus.CREATED, respostaRequisicao.getStatusCode());
 		assertEquals(paciente.getNome(), respostaRequisicao.getBody().nome());
+	}
+	
+	@Test
+	@DisplayName("Não deve cadastrar paciente com nome em branco")
+	void cadastrarPacienteCenario2() {
+		var paciente = criarPaciente();
+		paciente.setNome("");
+	    HttpHeaders header = new HttpHeaders();
+	    header.add("Authorization", "Bearer " + pegarToken());
+		var respostaRequisicao = restTemplate.exchange(URI.create(URL_PACIENTE), HttpMethod.POST, new HttpEntity<Paciente>(paciente,header) , RespostaErro.class);
+		
+		assertEquals(HttpStatus.BAD_REQUEST, respostaRequisicao.getStatusCode());
+		assertTrue(respostaRequisicao.getBody().erros().size() > 0);
+		assertEquals("nome", respostaRequisicao.getBody().erros().stream().findFirst().get().aviso());
+		assertEquals("não deve estar em branco", respostaRequisicao.getBody().erros().stream().findFirst().get().mensagem());
 	}
 	
 	private Endereco dadosEndereco() {
