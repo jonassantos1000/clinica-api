@@ -67,7 +67,7 @@ public class MedicoRepositoryTest{
 	private Medico cadastrarMedico(String nome, String email, String crm, Especialidade especialidade) {
 		var medico = new Medico(null, nome, email, crm, "123456789", true, especialidade, dadosEndereco());
 		em.persist(medico);
-		return medico;
+		return medico; 
 	}
 	
 	private Endereco dadosEndereco() {

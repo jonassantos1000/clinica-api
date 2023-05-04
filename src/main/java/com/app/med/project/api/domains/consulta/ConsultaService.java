@@ -40,7 +40,7 @@ public class ConsultaService {
 		validadoresAgendamento.forEach(validador -> validador.validar(consultaDTO));
 
 		Medico medico = escolherMedico(consultaDTO);
-		Paciente paciente = pacienteService.consultarPacientePorId(consultaDTO.idPaciente());
+		Paciente paciente = pacienteService.consultarPacientePorId(consultaDTO.idPaciente()); 
 
 		Consulta consulta = new Consulta(null, medico, paciente, consultaDTO.data(), null);
 		consultaRepository.save(consulta);
